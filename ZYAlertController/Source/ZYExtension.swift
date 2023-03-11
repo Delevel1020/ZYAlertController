@@ -8,23 +8,27 @@
 import Foundation
 import UIKit
 
-public extension UIFont {
+internal extension UIFont {
     static func pingFangRegular(_ ofSize: CGFloat) -> UIFont {
         return pingFangText(ofSize, W: "Regular")
     }
+
     static func pingFangMedium(_ ofSize: CGFloat) -> UIFont {
         return pingFangText(ofSize, W: "Medium")
     }
+
     static func pingFangBold(_ ofSize: CGFloat) -> UIFont {
         return pingFangText(ofSize, W: "Semibold")
     }
+
     /// 文字字体
-    private static func pingFangText(_ ofSize: CGFloat, W Weight: String) -> UIFont {
+    fileprivate static func pingFangText(_ ofSize: CGFloat, W Weight: String) -> UIFont {
         let fontName = "PingFangSC-" + Weight
         return appCustomFont(fontName: fontName, ofSize: ofSize)
     }
+
     /// 自定义的字体
-    private static func appCustomFont(fontName: String, ofSize: CGFloat) -> UIFont {
+    fileprivate static func appCustomFont(fontName: String, ofSize: CGFloat) -> UIFont {
         if let font = UIFont(name: fontName, size: ofSize) {
             return font
         } else {
@@ -33,7 +37,7 @@ public extension UIFont {
     }
 }
 
-public extension UIColor {
+internal extension UIColor {
     /// 十六进制 Int 颜色的使用(方法) Int 颜色 0x999999
     static func hexIntColor(hexInt: Int, alpha: CGFloat = 1) -> UIColor {
         let redComponet: Float = Float(hexInt >> 16)
@@ -43,13 +47,13 @@ public extension UIColor {
     }
 }
 
-
-public extension String {
+internal extension String {
     /// 字符串是否为空
     var isBlank: Bool {
         let trimmed = trimmingCharacters(in: CharacterSet.whitespaces)
         return trimmed.isEmpty
     }
+
     /// 计算字符串的Height
     func heightFont(_ font: UIFont?, width: CGFloat) -> CGFloat {
         var textSize: CGSize?
@@ -67,20 +71,20 @@ public extension String {
     }
 }
 
-public extension UIColor {
+internal extension UIColor {
     /// 颜色转变为图片
     var toImage: UIImage? {
         let size: CGSize = CGSize(width: 1, height: 1)
         UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
-        self.set()
+        set()
         UIRectFill(CGRectMake(0, 0, size.width, size.height))
         let image: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
+        UIGraphicsEndImageContext()
         return image
     }
 }
 
-extension UIView {
+internal extension UIView {
     /// 获取当前view的viewcontroller
     var currentVC: UIViewController? {
         var parentResponder: UIResponder? = self

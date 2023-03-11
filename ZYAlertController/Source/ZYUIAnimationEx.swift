@@ -12,11 +12,11 @@ open class ZYUIAnimationEx: NSObject, UIViewControllerAnimatedTransitioning {
     private(set) var isPresenting: Bool = false
     private(set) var style: ZYAlertControllerStyle = .alert
 
-    required public init(isPresenting: Bool) {
+    public required init(isPresenting: Bool) {
         self.isPresenting = isPresenting
     }
     
-    required public init(isPresenting: Bool, style: ZYAlertControllerStyle) {
+    public required init(isPresenting: Bool, style: ZYAlertControllerStyle) {
         self.isPresenting = isPresenting
         self.style = style
     }
@@ -42,15 +42,15 @@ open class ZYUIAnimationEx: NSObject, UIViewControllerAnimatedTransitioning {
 }
 
 
-public class ZYUIAnimationFadeEx: ZYUIAnimationEx {
-    public override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+internal class ZYUIAnimationFadeEx: ZYUIAnimationEx {
+    override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         if self.isPresenting {
             return 0.45
         }
         return 0.25
     }
     
-    public override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.to) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -88,7 +88,7 @@ public class ZYUIAnimationFadeEx: ZYUIAnimationEx {
         }
     }
     
-    public override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.from) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -110,12 +110,12 @@ public class ZYUIAnimationFadeEx: ZYUIAnimationEx {
 }
 
 
-public class ZYUIAnimationScaleFadeEx: ZYUIAnimationEx {
-    public override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+internal class ZYUIAnimationScaleFadeEx: ZYUIAnimationEx {
+    override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
     
-    public override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.to) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -147,7 +147,7 @@ public class ZYUIAnimationScaleFadeEx: ZYUIAnimationEx {
         }
     }
     
-    public override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.from) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -169,15 +169,15 @@ public class ZYUIAnimationScaleFadeEx: ZYUIAnimationEx {
 }
 
 
-public class ZYUIAnimationDropDownEx: ZYUIAnimationEx {
-    public override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+internal class ZYUIAnimationDropDownEx: ZYUIAnimationEx {
+    override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         if self.isPresenting {
             return 0.5
         }
         return 0.25
     }
     
-    public override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.to) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -204,7 +204,7 @@ public class ZYUIAnimationDropDownEx: ZYUIAnimationEx {
         }
     }
     
-    public override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.from) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -227,15 +227,15 @@ public class ZYUIAnimationDropDownEx: ZYUIAnimationEx {
 }
 
 
-class ZYUIAnimationDropTopEx: ZYUIAnimationEx {
-    public override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+internal class ZYUIAnimationDropTopEx: ZYUIAnimationEx {
+    override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         if self.isPresenting {
             return 0.5
         }
         return 0.25
     }
     
-    public override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func presentAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.to) as? ZYAlertController else {
             transition.completeTransition(true)
             return
@@ -262,7 +262,7 @@ class ZYUIAnimationDropTopEx: ZYUIAnimationEx {
         }
     }
     
-    public override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
+    override func dimissAnimatedTransition(transition: UIViewControllerContextTransitioning) {
         guard let alertController = transition.viewController(forKey: UITransitionContextViewControllerKey.from) as? ZYAlertController else {
             transition.completeTransition(true)
             return

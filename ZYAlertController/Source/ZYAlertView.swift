@@ -18,12 +18,12 @@ public enum ZYAlertActionStatu {
 public typealias ZYAlertActionHandler = (ZYAlertAction) -> Void
 
 public struct ZYAlertAction {
-    var title: String?
-    var enable: Bool = true
-    var statu: ZYAlertActionStatu = .nomal
-    var handler: ZYAlertActionHandler?
+    public var title: String?
+    public var enable: Bool = true
+    public var statu: ZYAlertActionStatu = .nomal
+    public var handler: ZYAlertActionHandler?
 
-    init(title: String = "确定", enable: Bool = true, statu: ZYAlertActionStatu = .nomal, handler: ZYAlertActionHandler? = nil) {
+    public init(title: String = "确定", enable: Bool = true, statu: ZYAlertActionStatu = .nomal, handler: ZYAlertActionHandler? = nil) {
         self.title = title
         self.enable = enable
         self.statu = statu
@@ -36,58 +36,58 @@ public struct ZYAlertAction {
 public class ZYAlertView: UIView {
     public struct alertSizeConfig {
         /// 最大宽度
-        var width: Double = UIScreen.main.bounds.size.width * 0.8
+        public var width: Double = UIScreen.main.bounds.size.width * 0.8
         /// 最大内容高度 如果超过改高度 则会自动滚动
-        var messageHeight: Double = 275
+        public var messageHeight: Double = 275
     }
 
     public struct fontConfig {
         /// 标题 字体大小
-        var title: UIFont = UIFont.pingFangMedium(15)
+        public var title: UIFont = UIFont.pingFangMedium(15)
         /// 内容 字体大小
-        var message: UIFont = UIFont.pingFangRegular(15)
+        public var message: UIFont = UIFont.pingFangRegular(15)
         /// 普通按钮 字体大小
-        var nomal: UIFont = UIFont.pingFangRegular(15)
+        public var nomal: UIFont = UIFont.pingFangRegular(15)
         /// 取消按钮 字体大小
-        var cancle: UIFont = UIFont.pingFangRegular(15)
+        public var cancle: UIFont = UIFont.pingFangRegular(15)
         /// ok按钮 字体大小
-        var ok: UIFont = UIFont.pingFangMedium(15)
+        public var ok: UIFont = UIFont.pingFangMedium(15)
     }
 
     public struct contentSpaceConfig {
         /// content 距离顶部间距
-        var top: Double = 0
+        public var top: Double = 0
         /// content 距离左右两边间距
-        var leftRight: Double = 0
+        public var leftRight: Double = 0
     }
 
     public struct contentColorConfig {
         /// content 距离底部间距
-        var titleColor: UIColor = UIColor.hexIntColor(hexInt: 0x333333)
+        public var titleColor: UIColor = UIColor.hexIntColor(hexInt: 0x333333)
         /// content 距离左右两边间距
-        var messageColor: UIColor = UIColor.hexIntColor(hexInt: 0x333333)
+        public var messageColor: UIColor = UIColor.hexIntColor(hexInt: 0x333333)
     }
 
     public struct buttonSpaceConfig {
         /// button 距离顶部间距
-        var top: Double = 0
+        public var top: Double = 0
         /// content 距离底部间距
-        var bottom: Double = 0
+        public var bottom: Double = 0
         /// button之间 左右间距
-        var leftRight: Double = 0
+        public var leftRight: Double = 0
         /// button 高度
-        var height: Double = 40
+        public var height: Double = 40
         /// button 圆角
-        var radius: Double = 0
+        public var radius: Double = 0
     }
 
     public struct buttonColorConfig {
         /// 普通按钮 颜色色值
-        var nomal: UIColor = UIColor.hexIntColor(hexInt: 0xFFFFFF)
+        public var nomal: UIColor = UIColor.hexIntColor(hexInt: 0xFFFFFF)
         /// 取消按钮 颜色色值
-        var cancle: UIColor = UIColor.hexIntColor(hexInt: 0xFFFFFF)
+        public var cancle: UIColor = UIColor.hexIntColor(hexInt: 0xFFFFFF)
         /// ok按钮 颜色色值
-        var ok: UIColor = UIColor.hexIntColor(hexInt: 0xE63629)
+        public var ok: UIColor = UIColor.hexIntColor(hexInt: 0xE63629)
     }
 
     public var alertSize: alertSizeConfig = alertSizeConfig() {
@@ -157,7 +157,7 @@ public class ZYAlertView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init(title: String? = nil, message: String? = nil) {
+    public convenience init(title: String? = nil, message: String? = nil) {
         self.init()
         backgroundColor = UIColor.white
         self.title = title
