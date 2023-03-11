@@ -14,5 +14,5 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => "https://github.com/Delevel1020/ZYAlertController.git", :tag => spec.version }
   spec.requires_arc = true
   spec.static_framework = true
-  spec.source_files  = "ZYAlertController/Source/*.{h,m}"
+  spec.source_files  = "ZYAlertController/Source/*.swift"
 end
