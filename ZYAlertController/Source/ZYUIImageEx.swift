@@ -9,20 +9,20 @@ import Accelerate
 import UIKit
 
 public extension UIImage {
-    public func zy_applyLightEffect() -> UIImage? {
+    func zy_applyLightEffect() -> UIImage? {
         return zy_applyBlure(radius: 30, tintColor: UIColor(white: 1.0, alpha: 0.3), delta: 1.8, maskImage: nil)
     }
 
-    public func zy_applyExtraLightEffect() -> UIImage? {
+    func zy_applyExtraLightEffect() -> UIImage? {
         return zy_applyBlure(radius: 20, tintColor: UIColor(white: 0.97, alpha: 0.82), delta: 1.8, maskImage: nil)
     }
 
-    public func zy_applyDarkEffect() -> UIImage? {
+    func zy_applyDarkEffect() -> UIImage? {
         return zy_applyBlure(radius: 20, tintColor: UIColor(white: 0.11, alpha: 0.73), delta: 1.8, maskImage: nil)
     }
 
     // 毛玻璃
-    public func zy_applyBlureTintEffect(_ color: UIColor?) -> UIImage? {
+    func zy_applyBlureTintEffect(_ color: UIColor?) -> UIImage? {
         guard let color = color else { return nil }
         let effectColorAlpha = 0.6
         var effectColor = color
