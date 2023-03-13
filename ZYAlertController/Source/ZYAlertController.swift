@@ -78,7 +78,7 @@ public class ZYAlertController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public convenience init(alertView: ZYAlertView?,
+    public convenience init(alertView: UIView?,
                             style: ZYAlertControllerStyle = .alert,
                             animation: ZYAlertTransitionAnimation = .fade) {
         self.init()
@@ -88,7 +88,7 @@ public class ZYAlertController: UIViewController {
         configPresent()
     }
 
-    public convenience init(alertView: ZYAlertView?,
+    public convenience init(alertView: UIView?,
                             style: ZYAlertControllerStyle = .alert,
                             animationClass: ZYUIAnimationEx.Type) {
         self.init()

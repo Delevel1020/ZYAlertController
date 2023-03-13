@@ -43,7 +43,7 @@ public class ZYAlertView: UIView {
 
     public struct fontConfig {
         /// 标题 字体大小
-        public var title: UIFont = UIFont.pingFangMedium(15)
+        public var title: UIFont = UIFont.pingFangMedium(17)
         /// 内容 字体大小
         public var message: UIFont = UIFont.pingFangRegular(15)
         /// 普通按钮 字体大小
@@ -118,7 +118,7 @@ public class ZYAlertView: UIView {
         didSet { layoutContent() }
     }
 
-    public var okButtonSpace: buttonSpaceConfig = buttonSpaceConfig(top: 0, bottom: 20, leftRight: 30, height: 50, radius: 25) {
+    public var okButtonSpace: buttonSpaceConfig = buttonSpaceConfig(top: 0, bottom: 20, leftRight: 30, height: 40, radius: 20) {
         didSet { layoutContent() }
     }
 
