@@ -251,30 +251,40 @@ extension ZYAlertView {
         scrollView.isScrollEnabled = false
 
         var originBottom: Double = 0
+        let showTitle: Bool = (title != nil && title?.isBlank == false)
+        let showMessage: Bool = (message != nil && message?.isBlank == false)
 
-        if let title = title, !title.isBlank {
+        if showTitle {
             let height = fontSize.title.lineHeight
             originBottom += (titleSpace.top + height)
             addConstraintAll(view: titleLB, topView: self, leftView: self, bottomView: nil, rightView: self, edge: UIEdgeInsets(top: titleSpace.top, left: titleSpace.leftRight, bottom: 0, right: -titleSpace.leftRight))
             titleLB.addConstraintSize(width: 0, height: height)
         }
 
-        if let message = message, !message.isBlank {
+        if showMessage {
             let preferrWidth: Double = alertSize.width - messageSpce.leftRight * 2
-            let messageHeight: Double = message.heightFont(fontSize.message, width: preferrWidth)
-            addConstraintTopToBottom(topView: titleLB, bottomView: scrollView, constant: messageSpce.top)
+            let messageHeight: Double = message!.heightFont(fontSize.message, width: preferrWidth)
+            var top = 0.0
+            if showTitle {
+                top = messageSpce.top
+                addConstraintTopToBottom(topView: titleLB, bottomView: scrollView, constant: top)
+            } else {
+                /// 由于没有标题 所以  只有按钮和提示信息， 这里 top 就直接读取 buttonContentSpace.top
+                top = buttonContentSpace.top
+                addConstraintAll(view: scrollView, topView: self, leftView: self, bottomView: nil, rightView: self, edge: UIEdgeInsets(top: top, left: messageSpce.leftRight, bottom: 0, right: -messageSpce.leftRight))
+            }
             addConstraintCenterX(view: scrollView, constant: 0)
             if messageHeight > alertSize.messageHeight {
                 scrollView.isScrollEnabled = true
-                originBottom += (messageSpce.top + alertSize.messageHeight)
+                originBottom += (top + alertSize.messageHeight)
                 scrollView.addConstraintSize(width: preferrWidth, height: alertSize.messageHeight)
             } else {
                 scrollView.isScrollEnabled = false
-                originBottom += (messageSpce.top + messageHeight)
+                originBottom += (top + messageHeight)
                 scrollView.addConstraintSize(width: preferrWidth, height: messageHeight)
             }
             scrollView.contentSize = CGSize(width: preferrWidth, height: messageHeight)
-            scrollView.addConstraintEdge(view: messageLB, edge: UIEdgeInsets.zero)
+            scrollView.addConstraintCenter(xView: messageLB, yView: messageLB)
             messageLB.addConstraintSize(width: preferrWidth, height: messageHeight)
         }
 
@@ -347,11 +357,29 @@ extension ZYAlertView {
                     currentConfig = config
                 }
             }
+            var top = 0.0
+            if showTitle, showMessage {
+                /// 标题、提示信息、按钮都有
+                top = buttonContentSpace.top
+                addConstraintTopToBottom(topView: scrollView, bottomView: buttonContentView, constant: top)
+                addConstraintAll(view: buttonContentView, topView: nil, leftView: self, bottomView: self, rightView: self, edge: UIEdgeInsets(top: top, left: buttonContentSpace.leftRight, bottom: 0, right: buttonContentSpace.leftRight))
+            } else if showTitle, !showMessage {
+                /// 只有标题和按钮
+                top = titleSpace.top
+                addConstraintTopToBottom(topView: titleLB, bottomView: buttonContentView, constant: top)
+                addConstraintAll(view: buttonContentView, topView: nil, leftView: self, bottomView: self, rightView: self, edge: UIEdgeInsets(top: top, left: buttonContentSpace.leftRight, bottom: 0, right: buttonContentSpace.leftRight))
+            } else if !showTitle, showMessage {
+                /// 只有提示信息和按钮
+                top = buttonContentSpace.top
+                addConstraintTopToBottom(topView: scrollView, bottomView: buttonContentView, constant: top)
+                addConstraintAll(view: buttonContentView, topView: nil, leftView: self, bottomView: self, rightView: self, edge: UIEdgeInsets(top: top, left: buttonContentSpace.leftRight, bottom: 0, right: buttonContentSpace.leftRight))
+            } else {
+                /// 只有按钮
+                top = buttonContentSpace.top
+                addConstraintAll(view: buttonContentView, topView: self, leftView: self, bottomView: self, rightView: self, edge: UIEdgeInsets(top: top, left: buttonContentSpace.leftRight, bottom: 0, right: buttonContentSpace.leftRight))
+            }
             // 计算总高度
-            originBottom += (buttonHeight + buttonContentSpace.top)
-            addConstraintTopToBottom(topView: scrollView, bottomView: buttonContentView, constant: buttonContentSpace.top)
-            addConstraintAll(view: buttonContentView, topView: nil, leftView: self, bottomView: self, rightView: self, edge: UIEdgeInsets(top: buttonContentSpace.top, left: buttonContentSpace.leftRight, bottom: 0, right: buttonContentSpace.leftRight))
-
+            originBottom += (buttonHeight + top)
             buttonHorLineView.addConstraintSize(width: 0, height: 0.5)
             buttonContentView.addConstraintAll(view: buttonHorLineView, topView: buttonContentView, leftView: buttonContentView, bottomView: nil, rightView: buttonContentView, edge: UIEdgeInsets.zero)
             buttonContentView.bringSubviewToFront(buttonHorLineView)
