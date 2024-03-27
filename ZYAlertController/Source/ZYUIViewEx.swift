@@ -24,11 +24,11 @@ internal extension UIView {
             addConstraint(layoutConstraint)
         }
         if leftView != nil {
-            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: leftView, attribute: .left, multiplier: 1, constant: edge.left)
+            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .leading, relatedBy: .equal, toItem: leftView, attribute: .leading, multiplier: 1, constant: edge.left)
             addConstraint(layoutConstraint)
         }
         if rightView != nil {
-            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: rightView, attribute: .right, multiplier: 1, constant: edge.right)
+            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: rightView, attribute: .trailing, multiplier: 1, constant: edge.right)
             addConstraint(layoutConstraint)
         }
     }
@@ -36,7 +36,7 @@ internal extension UIView {
     @discardableResult
     func addConstraintLeftToRight(leftView: UIView?, rightView: UIView?, constant: Double) -> NSLayoutConstraint? {
         guard let leftView = leftView else { return nil }
-        let layoutConstraint = NSLayoutConstraint(item: leftView, attribute: .right, relatedBy: .equal, toItem: rightView, attribute: .left, multiplier: 1, constant: -constant)
+        let layoutConstraint = NSLayoutConstraint(item: leftView, attribute: .trailing, relatedBy: .equal, toItem: rightView, attribute: .leading, multiplier: 1, constant: -constant)
         addConstraint(layoutConstraint)
         return layoutConstraint
     }
