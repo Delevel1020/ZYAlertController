@@ -156,7 +156,6 @@ extension ZYAlertController {
             self.backgroundView.alpha = 1
         } completion: { _ in
             self.addSingleTapGesture()
-            self.addStyleView()
         }
     }
 
