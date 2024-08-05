@@ -225,27 +225,26 @@ extension ZYAlertController {
 // MARK: - keyboard notification
 
 extension ZYAlertController {
-    @objc fileprivate func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: NSNotification) {
         guard let alertView = alertView else { return }
-        guard let userInfo = notification.userInfo as? NSDictionary else { return }
-        let value = userInfo.object(forKey: UIResponder.keyboardFrameEndUserInfoKey)
-        let keyboardRect = (value as AnyObject).cgRectValue ?? CGRect.zero
-
-        let alertViewBottomEdge = CGRectGetHeight(view.frame) - CGRectGetHeight(alertView.frame) / 2 - alertViewCenterY
-        let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-        let differ = CGRectGetHeight(keyboardRect) - alertViewBottomEdge
-        if alertViewCenterYConstraint?.constant == (CGFloat(-differ) - statusBarHeight) {
-            return
-        }
-        if differ > 0 {
-            alertViewCenterYConstraint?.constant = alertViewCenterY - differ - statusBarHeight
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
+        if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let alertViewBottomEdge = (view.frame.height - alertView.frame.height) / 2 - alertViewCenterY
+            // 获取状态栏高度
+            let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+            let differ = keyboardRect.height - alertViewBottomEdge
+            // 检查是否需要更新约束
+            if alertViewCenterYConstraint?.constant == -differ - statusBarHeight {
+                return
+            }
+            if differ >= 0 {
+                alertViewCenterYConstraint?.constant = alertViewCenterY - differ - statusBarHeight
+                UIView.animate(withDuration: 0.25) {
+                    self.view.layoutIfNeeded()
+                }
             }
         }
     }
-
-    @objc fileprivate func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: NSNotification) {
         alertViewCenterYConstraint?.constant = alertViewCenterY
         UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
