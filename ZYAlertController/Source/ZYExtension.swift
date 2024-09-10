@@ -84,16 +84,50 @@ internal extension UIColor {
     }
 }
 
+
 internal extension UIView {
-    /// 获取当前view的viewcontroller
-    var currentVC: UIViewController? {
-        var parentResponder: UIResponder? = self
-        while parentResponder != nil {
-            parentResponder = parentResponder!.next
-            if let viewController = parentResponder as? UIViewController {
-                return viewController
+    /// 获取控制器
+    var topVC: UIViewController? {
+        return topViewCtr(rootVC: topWindow?.rootViewController)
+    }
+
+    /// 获取控制器
+    func topViewCtr(rootVC: UIViewController?) -> UIViewController? {
+        if let presentedVC = rootVC?.presentedViewController {
+            return topViewCtr(rootVC: presentedVC)
+        }
+        if let nav = rootVC as? UINavigationController,
+           let lastVC = nav.viewControllers.last {
+            return topViewCtr(rootVC: lastVC)
+        }
+        if let tab = rootVC as? UITabBarController,
+           let selectedVC = tab.selectedViewController {
+            return topViewCtr(rootVC: selectedVC)
+        }
+        return rootVC
+    }
+
+    /// window获取
+    var topWindow: UIWindow? {
+        if #available(iOS 13.0, *) {
+            if let window = UIApplication.shared.connectedScenes
+                .map({ $0 as? UIWindowScene })
+                .compactMap({ $0 })
+                .first?.windows
+                .filter({ $0.isKeyWindow })
+                .first {
+                return window
+            } else if let window = UIApplication.shared.delegate?.window {
+                return window
+            } else {
+                return UIApplication.shared.keyWindow
+            }
+        } else {
+            if let window = UIApplication.shared.delegate?.window {
+                return window
+            } else {
+                return UIApplication.shared.keyWindow
             }
         }
-        return nil
     }
 }

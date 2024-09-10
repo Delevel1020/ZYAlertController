@@ -230,7 +230,7 @@ extension ZYAlertView {
     @objc fileprivate func actionButtonClicked(sender: UIButton) {
         let action: ZYAlertAction = actions[sender.tag - buttonTagOffset]
         if clickedAutoHide {
-            let viewController: UIViewController? = currentVC
+            let viewController: UIViewController? = topVC
             guard let viewController = viewController, viewController.isKind(of: ZYAlertController.self) else { return }
             viewController.dismiss(animated: true)
         }
