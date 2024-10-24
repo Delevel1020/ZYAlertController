@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "ZYAlertController"
-  spec.version      = "0.2.1"
+  spec.version      = "0.2.2"
   spec.summary      = "ZYAlertController is swift module, Modify the library based on the third-party TYAlertController"
   spec.description  = <<-DESC
                     "ZYAlertController Library"

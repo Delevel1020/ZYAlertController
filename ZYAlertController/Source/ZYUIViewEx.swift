@@ -32,6 +32,50 @@ internal extension UIView {
             addConstraint(layoutConstraint)
         }
     }
+    
+    @discardableResult
+    func addConstraintLeft(view: UIView?, leftView: UIView?, constant: Double) -> NSLayoutConstraint? {
+        guard let view = view else { return nil }
+        if leftView != nil {
+            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .leading, relatedBy: .equal, toItem: leftView, attribute: .leading, multiplier: 1, constant: constant)
+            addConstraint(layoutConstraint)
+            return layoutConstraint
+        }
+        return nil
+    }
+    
+    @discardableResult
+    func addConstraintRight(view: UIView?, rightView: UIView?, constant: Double) -> NSLayoutConstraint? {
+        guard let view = view else { return nil }
+        if rightView != nil {
+            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: rightView, attribute: .trailing, multiplier: 1, constant: constant)
+            addConstraint(layoutConstraint)
+            return layoutConstraint
+        }
+        return nil
+    }
+    
+    @discardableResult
+    func addConstraintTop(view: UIView?, topView: UIView?, constant: Double) -> NSLayoutConstraint? {
+        guard let view = view else { return nil }
+        if topView != nil {
+            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: topView, attribute: .top, multiplier: 1, constant: constant)
+            addConstraint(layoutConstraint)
+            return layoutConstraint
+        }
+        return nil
+    }
+    
+    @discardableResult
+    func addConstraintBottom(view: UIView?, bottomView: UIView?, constant: Double) -> NSLayoutConstraint? {
+        guard let view = view else { return nil }
+        if bottomView != nil {
+            let layoutConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .bottom, multiplier: 1, constant: constant)
+            addConstraint(layoutConstraint)
+            return layoutConstraint
+        }
+        return nil
+    }
 
     @discardableResult
     func addConstraintLeftToRight(leftView: UIView?, rightView: UIView?, constant: Double) -> NSLayoutConstraint? {

@@ -53,9 +53,15 @@ public class ZYAlertController: UIViewController {
     public private(set) var alertStyleEdging: CGFloat = 25 // alert 左右边距
     public private(set) var actionSheetStyleEdging: CGFloat = 0 // actionSheet 左右边距
 
+    // 下面三参数是用来记录 alert的layout
     public private(set) var alertViewOriginY: CGFloat = 0
     public private(set) var alertViewCenterY: CGFloat = 0
     public private(set) var alertViewCenterYConstraint: NSLayoutConstraint?
+    
+    // 下面三个参数是用来记录 actionsheet的layout
+    public private(set) var alertViewBottom: CGFloat = 0
+    public var alertViewLastTextViewBottom: CGFloat = 0
+    public private(set) var alertViewBottomConstraint: NSLayoutConstraint?
 
     public private(set) var singleTap: UITapGestureRecognizer?
 
@@ -124,10 +130,8 @@ public class ZYAlertController: UIViewController {
         addBackgroundView()
         addSingleTapGesture()
         addStyleView()
-        if style == .alert {
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     fileprivate func configPresent() {
@@ -199,7 +203,10 @@ extension ZYAlertController {
 
     fileprivate func addActionSheetView() {
         alertView!.removeConstraintAttribute(attr: .width)
-        view.addConstraintAll(view: alertView, topView: nil, leftView: view, bottomView: view, rightView: view, edge: UIEdgeInsets(top: 0, left: actionSheetStyleEdging, bottom: 0, right: -actionSheetStyleEdging))
+        alertViewBottom = 0
+        view.addConstraintLeft(view: alertView, leftView: view, constant: actionSheetStyleEdging)
+        view.addConstraintRight(view: alertView, rightView: view, constant: -actionSheetStyleEdging)
+        alertViewBottomConstraint = view.addConstraintBottom(view: alertView, bottomView: view, constant: 0)
         if CGRectGetHeight(alertView!.frame) > 0 {
             alertView!.addConstraintSize(width: 0, height: CGRectGetHeight(alertView!.frame))
         }
@@ -227,27 +234,50 @@ extension ZYAlertController {
 extension ZYAlertController {
     @objc func keyboardWillShow(_ notification: NSNotification) {
         guard let alertView = alertView else { return }
-        if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            let alertViewBottomEdge = (view.frame.height - alertView.frame.height) / 2 - alertViewCenterY
-            // 获取状态栏高度
-            let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-            let differ = keyboardRect.height - alertViewBottomEdge
-            // 检查是否需要更新约束
-            if alertViewCenterYConstraint?.constant == -differ - statusBarHeight {
-                return
+        if style == .alert {
+            if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                let alertViewBottomEdge = (view.frame.height - alertView.frame.height) / 2 - alertViewCenterY
+                // 获取状态栏高度
+                let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+                let differ = keyboardRect.height - alertViewBottomEdge
+                // 检查是否需要更新约束
+                if alertViewCenterYConstraint?.constant == -differ - statusBarHeight {
+                    return
+                }
+                if differ >= 0 {
+                    alertViewCenterYConstraint?.constant = alertViewCenterY - differ - statusBarHeight
+                    UIView.animate(withDuration: 0.25) {
+                        self.view.layoutIfNeeded()
+                    }
+                }
             }
-            if differ >= 0 {
-                alertViewCenterYConstraint?.constant = alertViewCenterY - differ - statusBarHeight
-                UIView.animate(withDuration: 0.25) {
-                    self.view.layoutIfNeeded()
+        } else if style == .actionSheet {
+            if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                let differ = alertViewBottom - keyboardRect.height + alertViewLastTextViewBottom
+                // 检查是否需要更新约束
+                if alertViewBottomConstraint?.constant == differ {
+                    return
+                }
+                if differ <= 0 {
+                    alertViewBottomConstraint?.constant = differ
+                    UIView.animate(withDuration: 0.25) {
+                        self.view.layoutIfNeeded()
+                    }
                 }
             }
         }
     }
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        alertViewCenterYConstraint?.constant = alertViewCenterY
-        UIView.animate(withDuration: 0.25) {
-            self.view.layoutIfNeeded()
+        if style == .alert {
+            alertViewCenterYConstraint?.constant = alertViewCenterY
+            UIView.animate(withDuration: 0.25) {
+                self.view.layoutIfNeeded()
+            }
+        } else if style == .actionSheet {
+            alertViewBottomConstraint?.constant = alertViewBottom
+            UIView.animate(withDuration: 0.25) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 }
